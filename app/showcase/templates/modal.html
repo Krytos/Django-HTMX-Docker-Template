@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="title is-4">Modal Dialog Example</h2>
+<p class="subtitle">This example demonstrates how to load content into a modal dialog without page refresh.</p>
+
+<div class="box demo-section">
+    <h4 class="title is-5">Contact List</h4>
+    {% for contact in contacts %}
+    <div class="box">
+        <div class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <div>
+                        <p class="title is-5">{{ contact.name }}</p>
+                        <p>{{ contact.email }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <button class="button is-info"
+                            hx-get="{% url 'contact_detail_modal' contact.pk %}"
+                            hx-target="#modal-content"
+                            hx-trigger="click"
+                            onclick="document.getElementById('contactModal').classList.add('is-active')">
+                        View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal -->
+<div class="modal" id="contactModal">
+    <div class="modal-background" onclick="document.getElementById('contactModal').classList.remove('is-active')"></div>
+    <div class="modal-card">
+        <div id="modal-content">
+            <!-- Content will be loaded here by HTMX -->
+        </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="document.getElementById('contactModal').classList.remove('is-active')"></button>
+</div>
+
+<div class="mt-5">
+    <h4 class="title is-5">How it works</h4>
+    <p>Each "View Details" button uses these attributes:</p>
+    <div class="content">
+        <ul>
+            <li><code>hx-get</code>: The URL to fetch the contact details from</li>
+            <li><code>hx-target</code>: The element in the modal to insert the content into</li>
+            <li><code>onclick</code>: Simple inline JavaScript to open the modal</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

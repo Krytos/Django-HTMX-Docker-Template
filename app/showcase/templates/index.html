@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="box has-background-light p-5">
+    <h1 class="title is-4">Welcome to HTMX Showcase</h1>
+    <p class="subtitle">This is a collection of examples showing how to use HTMX with Django.</p>
+    <hr>
+    <p>Select one of the examples from the tabs above to get started.</p>
+</div>
+
+<div class="columns is-multiline mt-4">
+    <div class="column is-half">
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Click to Load</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Demonstrates how to load content only when requested by the user.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'click_to_load' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Form Submission</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Shows how to submit forms without page refresh and update DOM elements.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'form_submit' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Infinite Scroll</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Loads more content when the user scrolls to the bottom of the page.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'infinite_scroll' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+    </div>
+    <div class="column is-half">
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Active Search</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Searches and filters content as the user types in a search field.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'active_search' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Table Sort</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Sorts a table by clicking on column headers without page refresh.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'table_sort' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <p class="card-header-title">Modal Dialog</p>
+            </header>
+            <div class="card-content">
+                <div class="content">
+                    <p>Opens a modal dialog with content loaded via HTMX.</p>
+                </div>
+            </div>
+            <footer class="card-footer">
+                <a href="{% url 'modal' %}" class="card-footer-item">View Example</a>
+            </footer>
+        </div>
+    </div>
+</div>
+{% endblock %}

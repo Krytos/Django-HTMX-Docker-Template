@@ -1,0 +1,26 @@
+<header class="modal-card-head">
+    <p class="modal-card-title">{{ contact.name }}</p>
+    <button class="delete" aria-label="close" onclick="document.getElementById('contactModal').classList.remove('is-active')"></button>
+</header>
+<section class="modal-card-body">
+    <div class="card">
+        <div class="card-content">
+            <p class="title is-5">Contact Details</p>
+            <div class="content">
+                <dl>
+                    <dt><strong>Name:</strong></dt>
+                    <dd>{{ contact.name }}</dd>
+                    <dt><strong>Email:</strong></dt>
+                    <dd>{{ contact.email }}</dd>
+                    <dt><strong>City:</strong></dt>
+                    <dd>{{ contact.city }}</dd>
+                    <dt><strong>Added on:</strong></dt>
+                    <dd>{{ contact.created_at|date:"F d, Y" }}</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="modal-card-foot">
+    <button class="button" onclick="document.getElementById('contactModal').classList.remove('is-active')">Close</button>
+</footer>

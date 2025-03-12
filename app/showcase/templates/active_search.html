@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="title is-4">Active Search Example</h2>
+<p class="subtitle">This example demonstrates how to filter content as you type in a search field.</p>
+
+<div class="box demo-section">
+    <div class="field">
+        <label for="search-input" class="label">Search Contacts</label>
+        <div class="control has-icons-left has-icons-right">
+            <input type="text"
+                   id="search-input"
+                   name="query"
+                   class="input"
+                   placeholder="Start typing a name..."
+                   hx-get="{% url 'search_contacts' %}"
+                   hx-trigger="keyup changed delay:300ms, search"
+                   hx-target="#search-results"
+                   hx-indicator="#search-indicator">
+            <span class="icon is-small is-left">
+                <i class="fas fa-search"></i>
+            </span>
+            <span id="search-indicator" class="icon is-small is-right htmx-indicator">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
+        </div>
+    </div>
+
+    <div id="search-results" class="mt-4">
+        {% include 'partials/contact_search_results.html' with contacts=contacts %}
+    </div>
+</div>
+
+<div class="mt-5">
+    <h4 class="title is-5">How it works</h4>
+    <p>The search input uses these HTMX attributes:</p>
+    <div class="content">
+        <ul>
+            <li><code>hx-get</code>: The URL to send the search query to</li>
+            <li><code>hx-trigger</code>: "keyup changed delay:300ms" - triggers 300ms after typing stops</li>
+            <li><code>hx-target</code>: The element to replace with the search results</li>
+            <li><code>hx-indicator</code>: Element to show during the request</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% if contacts %}
+<div>
+    {% for contact in contacts %}
+    <div class="box">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="title is-5">{{ contact.name }}</p>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <p class="has-text-grey is-size-7">{{ contact.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        <p>{{ contact.email }}</p>
+        <p class="has-text-grey">{{ contact.city }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="notification is-info">No contacts found matching your search.</div>
+{% endif %}

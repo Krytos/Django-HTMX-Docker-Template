@@ -1,0 +1,53 @@
+<div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th hx-get="{% url 'sort_contacts' %}?sort=name&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Name
+                    {% if sort_by == 'name' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-name' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=email&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Email
+                    {% if sort_by == 'email' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-email' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=city&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    City
+                    {% if sort_by == 'city' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-city' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=created_at&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Date Added
+                    {% if sort_by == 'created_at' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-created_at' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.city }}</td>
+                <td>{{ contact.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="sort-indicator" class="htmx-indicator has-text-centered mt-2">
+    <span class="icon">
+        <i class="fas fa-spinner fa-spin"></i>
+    </span>
+    <span>Sorting...</span>
+</div>

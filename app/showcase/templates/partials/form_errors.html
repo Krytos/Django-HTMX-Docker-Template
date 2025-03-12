@@ -1,0 +1,41 @@
+<div id="form-and-list">
+    <div class="notification is-danger">
+        <h5 class="title is-5">Please correct the errors below:</h5>
+        {% for field in form %}
+            {% if field.errors %}
+            <div class="mb-2">
+                <strong>{{ field.label }}:</strong> {{ field.errors.0 }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="field">
+        <label for="{{ form.name.id_for_label }}" class="label">Name</label>
+        <div class="control">
+            {{ form.name }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+        <div class="control">
+            {{ form.email }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.city.id_for_label }}" class="label">City</label>
+        <div class="control">
+            {{ form.city }}
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button type="submit" class="button is-primary">
+                <span>Submit</span>
+                <span id="submit-indicator" class="htmx-indicator icon is-small ml-2">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

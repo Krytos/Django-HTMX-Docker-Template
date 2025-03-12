@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="title is-4">Table Sorting Example</h2>
+<p class="subtitle">This example demonstrates how to sort a table by clicking on column headers.</p>
+
+<div class="box demo-section">
+    <h4 class="title is-5">Contacts Table</h4>
+    <div id="sortable-table">
+        {% include 'partials/sorted_contacts.html' with contacts=contacts sort_by=sort_by %}
+    </div>
+</div>
+
+<div class="mt-5">
+    <h4 class="title is-5">How it works</h4>
+    <p>Each column header uses these HTMX attributes:</p>
+    <div class="content">
+        <ul>
+            <li><code>hx-get</code>: The URL to fetch sorted data from, with sort parameter</li>
+            <li><code>hx-target</code>: The element to replace with the sorted table</li>
+            <li><code>hx-indicator</code>: Element to show during the request</li>
+            <li>The current sort field and direction is tracked to toggle between ascending/descending</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+<div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th hx-get="{% url 'sort_contacts' %}?sort=name&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Name
+                    {% if sort_by == 'name' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-name' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=email&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Email
+                    {% if sort_by == 'email' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-email' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=city&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    City
+                    {% if sort_by == 'city' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-city' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+                <th hx-get="{% url 'sort_contacts' %}?sort=created_at&current_sort={{ sort_by }}"
+                    hx-target="#sortable-table"
+                    hx-indicator="#sort-indicator"
+                    style="cursor: pointer;">
+                    Date Added
+                    {% if sort_by == 'created_at' %}<i class="fas fa-sort-down"></i>{% elif sort_by == '-created_at' %}<i class="fas fa-sort-up"></i>{% endif %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.city }}</td>
+                <td>{{ contact.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="sort-indicator" class="htmx-indicator has-text-centered mt-2">
+    <span class="icon">
+        <i class="fas fa-spinner fa-spin"></i>
+    </span>
+    <span>Sorting...</span>
+</div>

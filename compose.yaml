@@ -1,0 +1,64 @@
+services:
+#    postgres:
+#        container_name: template-postgres
+#        image: postgres:latest
+#        ports:
+#            - '5432:5432'
+#        environment:
+#            POSTGRES_USER: postgres
+#            POSTGRES_PASSWORD: postgres
+#            POSTGRES_DB: postgres
+#            PGDATA: /data/postgres
+#        volumes:
+#            - ./data/postgres:/data/postgres
+    app:
+        container_name: template-app
+        build:
+            context: app
+            dockerfile: Dockerfile
+            target: development
+        command: python manage.py runserver 0.0.0.0:8000
+        network_mode: host
+#        depends_on:
+#            - postgres
+        environment:
+            SHELL: /bin/bash
+            VIRTUAL_ENV: /app/.venv
+        volumes:
+            - ./app:/app
+            - app-venv:/app/.venv
+            - node-modules:/app/node_modules
+            - static-files:/app/static
+
+    test:
+        container_name: template-test
+        build:
+            context: app
+            dockerfile: Dockerfile
+            target: development
+        command: pytest
+        network_mode: host
+        depends_on:
+            - app
+        profiles:
+            - test
+        develop:
+            watch:
+                - action: sync
+                  path: ./app
+                  target: /app
+                  ignore:
+                      - '**/__pycache__/'
+                      - '**/*.pyc'
+                      - '**/static/'
+                      - '**/.venv/'
+                - action: rebuild
+                  path: ./app/pyproject.toml
+                - action: sync+restart
+                  path: ./app/tests
+                  target: /app/tests
+
+volumes:
+  app-venv:
+  node-modules:
+  static-files:

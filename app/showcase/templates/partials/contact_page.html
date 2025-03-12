@@ -1,0 +1,29 @@
+<div>
+    {% for contact in page_obj %}
+    <div class="box">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="title is-5">{{ contact.name }}</p>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <p class="has-text-grey is-size-7">{{ contact.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        <p>{{ contact.email }}</p>
+        <p class="has-text-grey">{{ contact.city }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% if page_obj.has_next %}
+<div hx-get="{% url 'load_more_contacts' %}?page={{ page_obj.next_page_number }}"
+     hx-trigger="revealed"
+     hx-target="#contacts-container"
+     hx-swap="beforeend"
+     hx-indicator="#loading-more-indicator"
+     class="htmx-sentinel"></div>
+{% endif %}

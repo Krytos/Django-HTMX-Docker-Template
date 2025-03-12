@@ -1,0 +1,47 @@
+[project]
+name = "pythondockertemplate"
+version = "0.1.0"
+description = "A minimal Python project template for Docker"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    {name = "Kevin Meinon", email = "kevin@meinon.de"},
+]
+license = { text = "MIT" }
+dependencies = [
+    "Django==5.0.6",
+    "django-htmx>=1.17.2",
+    "django-ninja-extra==0.22.3",
+    "django-ninja-jwt==5.3.5",
+    "faker>=37.0.0",
+    "httpx==0.27.2",
+    "pydantic==2.9.2",
+    "pydantic_core==2.23.4",
+]
+
+[dependency-groups]
+dev = ["ruff", "pytest==8.3.4", "pytest-django==4.10.0"]
+
+[tool.ruff]
+target-version = "py313"
+line-length = 88
+
+
+[tool.ruff.lint]
+unfixable = ["F401"]
+select = ["E", "F", "I", "B", "W", "C4", "N", "UP", "PT"]
+ignore = ["D203", "D212"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["your_project"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pytest]
+testpaths = ["tests"]
+python_files = "test_*.py"
+django_find_project = false

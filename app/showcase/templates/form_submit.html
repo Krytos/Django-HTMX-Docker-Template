@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="title is-4">Form Submission Example</h2>
+<p class="subtitle">This example demonstrates how to submit a form and update content without a page refresh.</p>
+
+<div class="box demo-section">
+    <div class="columns">
+        <div class="column is-half">
+            <h4 class="title is-5">Add a Contact</h4>
+            <form hx-post="{% url 'submit_contact_form' %}"
+                  hx-target="#form-and-list"
+                  hx-swap="outerHTML"
+                  hx-indicator="#submit-indicator">
+                {% csrf_token %}
+                <div id="form-and-list">
+                    <div class="field">
+                        <label for="{{ form.name.id_for_label }}" class="label">Name</label>
+                        <div class="control">
+                            {{ form.name }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+                        <div class="control">
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="{{ form.city.id_for_label }}" class="label">City</label>
+                        <div class="control">
+                            {{ form.city }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-primary">
+                                <span>Submit</span>
+                                <span id="submit-indicator" class="htmx-indicator icon is-small ml-2">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="column is-half">
+            <h4 class="title is-5">Recent Contacts</h4>
+            <div id="contacts-list">
+                {% include 'partials/contact_list.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h4 class="title is-5">How it works</h4>
+    <p>The form uses these HTMX attributes:</p>
+    <div class="content">
+        <ul>
+            <li><code>hx-post</code>: The URL to send the form data to</li>
+            <li><code>hx-target</code>: The element to replace with the response</li>
+            <li><code>hx-swap</code>: How to insert the content (outerHTML = replace entire element)</li>
+            <li><code>hx-indicator</code>: Element to show during the request</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+<div id="form-and-list">
+    {% if form %}
+    <div class="field">
+        <label for="{{ form.name.id_for_label }}" class="label">Name</label>
+        <div class="control">
+            {{ form.name }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+        <div class="control">
+            {{ form.email }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.city.id_for_label }}" class="label">City</label>
+        <div class="control">
+            {{ form.city }}
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button type="submit" class="button is-primary">
+                <span>Submit</span>
+                <span id="submit-indicator" class="htmx-indicator icon is-small ml-2">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if contacts %}
+<div class="mt-4">
+    {% for contact in contacts %}
+    <div class="box">
+        <div class="level is-mobile">
+            <div class="level-left">
+                <div class="level-item">
+                    <p class="title is-5">{{ contact.name }}</p>
+                </div>
+            </div>
+            <div class="level-right">
+                <div class="level-item">
+                    <p class="has-text-grey is-size-7">{{ contact.created_at|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        <p>{{ contact.email }}</p>
+        <p class="has-text-grey">{{ contact.city }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="notification is-info mt-4">No contacts added yet.</div>
+{% endif %}
+
+<div id="form-and-list">
+    <div class="notification is-danger">
+        <h5 class="title is-5">Please correct the errors below:</h5>
+        {% for field in form %}
+            {% if field.errors %}
+            <div class="mb-2">
+                <strong>{{ field.label }}:</strong> {{ field.errors.0 }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="field">
+        <label for="{{ form.name.id_for_label }}" class="label">Name</label>
+        <div class="control">
+            {{ form.name }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.email.id_for_label }}" class="label">Email</label>
+        <div class="control">
+            {{ form.email }}
+        </div>
+    </div>
+    <div class="field">
+        <label for="{{ form.city.id_for_label }}" class="label">City</label>
+        <div class="control">
+            {{ form.city }}
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button type="submit" class="button is-primary">
+                <span>Submit</span>
+                <span id="submit-indicator" class="htmx-indicator icon is-small ml-2">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="title is-4">Click to Load Example</h2>
+<p class="subtitle">This example demonstrates how to load content only when the user clicks a button.</p>
+
+<div class="box demo-section">
+    <div id="content-area">
+        <p>This is the initial content. Click the button below to load more content via HTMX without refreshing the page.</p>
+    </div>
+
+    <button class="button is-primary mt-5"
+            hx-get="{% url 'load_more_content' %}"
+            hx-target="#content-area"
+            hx-swap="beforeend"
+            hx-indicator="#loading-indicator">
+        <span>Load More Content</span>
+        <span id="loading-indicator" class="htmx-indicator">
+            <span class="icon">
+                <i class="fas fa-spinner fa-spin"></i>
+            </span>
+        </span>
+    </button>
+</div>
+
+<div class="mt-5">
+    <h4 class="title is-5">How it works</h4>
+    <p>The button uses these HTMX attributes:</p>
+    <div class="content">
+        <ul>
+            <li><code>hx-get</code>: The URL to fetch content from</li>
+            <li><code>hx-target</code>: The element to insert the content into</li>
+            <li><code>hx-swap</code>: How to insert the content (beforeend = append)</li>
+            <li><code>hx-indicator</code>: Element to show during the request</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+<div class="notification is-success mt-4">
+    <h4 class="title is-5">New Content Loaded!</h4>
+    <p>This content was loaded dynamically using HTMX without refreshing the page.</p>
+    <hr>
+    <p class="mb-0">The server processed this request and returned just this HTML fragment, which HTMX appended to the content area.</p>
+</div>
